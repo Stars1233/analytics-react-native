@@ -1,0 +1,47 @@
+# Publish E2E CLI build as a GitHub Actions artifact
+#
+# On merge to master (or monthly refresh), builds the e2e-cli
+# and uploads it as an artifact.
+
+name: Publish E2E CLI
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'e2e-cli/**'
+      - 'packages/core/src/**'
+  schedule:
+    - cron: '0 0 1 * *'
+  workflow_dispatch:
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout SDK
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Build e2e-cli
+        working-directory: e2e-cli
+        run: |
+          npm install
+          npm run build
+
+      - name: Prepare artifact
+        run: |
+          mkdir -p artifact
+          cp -r e2e-cli/dist artifact/
+          cp e2e-cli/package.json artifact/
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: e2e-cli
+          path: artifact/
+          retention-days: 90
