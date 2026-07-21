@@ -32,6 +32,8 @@ jobs:
         uses: ./.github/actions/artifactory-oidc
       - name: Install devbox
         uses: jetify-com/devbox-install-action@a0d2d53632934ae004f878c840055956d9f741b0 # v0.14.0
+      - name: Route Nix/devbox packages through Artifactory
+        uses: ./.github/actions/devbox-artifactory-cache
       - name: Install dependencies
         run: devbox run ci:install
       - name: Lint (eslint)
@@ -66,6 +68,8 @@ jobs:
 
       - name: Install devbox
         uses: jetify-com/devbox-install-action@a0d2d53632934ae004f878c840055956d9f741b0 # v0.14.0
+      - name: Route Nix/devbox packages through Artifactory
+        uses: ./.github/actions/devbox-artifactory-cache
 
       - name: Release (dry-run)
         run: devbox run release-dry-run
@@ -94,6 +98,8 @@ jobs:
 
       - name: Install devbox
         uses: jetify-com/devbox-install-action@a0d2d53632934ae004f878c840055956d9f741b0 # v0.14.0
+      - name: Route Nix/devbox packages through Artifactory
+        uses: ./.github/actions/devbox-artifactory-cache
 
       - name: Release (beta)
         run: |
@@ -125,6 +131,8 @@ jobs:
 
       - name: Install devbox
         uses: jetify-com/devbox-install-action@a0d2d53632934ae004f878c840055956d9f741b0 # v0.14.0
+      - name: Route Nix/devbox packages through Artifactory
+        uses: ./.github/actions/devbox-artifactory-cache
 
       - name: Release (production)
         run: devbox run release
